@@ -1,0 +1,30 @@
+# Blackboard Transcription: 20260325_124433.jpg
+
+## Dataflow Optimizations
+- **CCP**: Conditional Constant Propagation
+- **DCE**: Dead Code Elimination
+- **CSE**: Common Subexpression Elimination
+- **COPY PROP**: Copy Propagation
+
+## Global Common Subexpression Elimination
+### Partially Available Expressions
+**Forward Analysis ($\cup$)**
+
+$$PAV IN(B) = \bigcap_{P \in PRED(B)} PAV OUT(P)$$
+
+$$PAV OUT(B) = EUSE(B) \cup (PAV IN(B) \setminus KILL(B))$$
+
+---
+
+## Partial Redundancy Elimination (PRE)
+**Knoop, Rüthing, Steffen (1992)**
+
+**Definition:** Expression $E$ is **partially redundant** if **some** path from entry to $E$ calculates $E$ before.
+
+---
+
+## CFG Diagram Sketch
+A diagram shows a CFG with an entry and exit.
+- One path contains a calculation of `A+B`.
+- Another path joins later where `A+B` is used again.
+- If `A+B` is calculated on one path but not the other, it is partially redundant at the join point.

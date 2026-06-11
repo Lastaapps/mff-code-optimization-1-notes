@@ -1,0 +1,17 @@
+# SSA Construction: Proof Details and Edge Cases
+
+### Edge Case: $X = Z$
+Diagram showing a node where $X = Z$.
+Path $p$ starts from $X$ and loops back to $X$ (or starts from $X$ and reaches $Z=X$).
+Path $q$ from $Y$ reaches $X=Z$.
+
+### Case: Self-loop
+- If $X \in \text{Succ}(X)$:
+  - $X \in DF(X)$
+  - $Z \in DF(X)$ (if $Z=X$)
+
+### Additional Notes
+- Diagram with node $A$ where $A \in DF(X)$.
+- Path $p$ through several basic blocks.
+- Mention of "USE CASE 1 FOR $A_1^{-1}$" (referencing a previous part of the proof).
+- A small diagram of a single basic block.

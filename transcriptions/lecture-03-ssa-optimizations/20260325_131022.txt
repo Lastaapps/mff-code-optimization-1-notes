@@ -1,0 +1,13 @@
+# Blackboard Transcription: 20260325_131022.jpg
+
+## DFS and Backedges in CFG
+The blackboard shows a CFG being analyzed using Depth First Search (DFS) to identify loop structures.
+
+- **DFS BACKEDGE**: An edge from a node to one of its ancestors in the DFS tree. This is the formal way to identify loops in a reducible CFG.
+- **Diagram Visuals**:
+  - Entry block (top)
+  - A loop header.
+  - A block containing `A/B`.
+  - An exit block.
+  - Circular arrows indicate the backedge forming the loop.
+  - Yellow/orange lines trace the DFS traversal paths.

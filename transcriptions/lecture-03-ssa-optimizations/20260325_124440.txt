@@ -1,0 +1,16 @@
+# Blackboard Transcription: 20260325_124440.jpg
+
+## Down-Safety
+**Definition:** Expression $E$ is **down-safe** in Basic Block $B$ iff $E$ is calculated on every path from $B$ (before any operand is redefined).
+
+## Anticipancy (Backward Analysis)
+$$ANT IN(B) = EUSE(B) \cup (ANT OUT(B) \setminus KILL(B))$$
+$$ANT OUT(B) = \bigcap_{S \in SUCC(B)} ANT IN(S)$$
+
+---
+
+## CFG Diagram
+Diagram illustrating the flow of anticipancy:
+- A block $B$ has multiple successors $S_1, S_2, \dots$
+- `ANT OUT(B)` is the intersection of `ANT IN` of its successors.
+- If `A+B` is calculated in all paths starting from $B$, it is "anticipated" at the end of $B$.

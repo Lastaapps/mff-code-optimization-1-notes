@@ -1,0 +1,25 @@
+# Blackboard Transcription: 20260311_133520.jpg
+
+## Data-Flow Analysis Assumptions
+To ensure the correctness and termination of the iterative algorithm, the following must hold:
+
+1. **Meet must be Monotone**:
+    - If $x \leq x'$ and $y \leq y'$, then $x \wedge y \leq x' \wedge y'$.
+2. **Jump functions must be Monotone**:
+    - $J_B(x) \leq J_B(x')$
+
+---
+
+## Theorem (THM)
+**Iterative dataflow is finite if the semi-lattice has finite height.**
+- This guarantees that the algorithm will eventually reach a fixed point.
+
+---
+
+## CFG Trace (Left Side)
+Another loop diagram showing the evolution of lattice values:
+- **Block 1 (Entry)**: Input is `VAR`.
+- **Block 2 (Loop Header/Body)**: Contains `IF (a > 0)`.
+- **Labels** show values like $\top$ (Top), `0`, `1`, and `VAR` being propagated through iterations.
+    - Initial pass: Values stay closer to Top ($\top$).
+    - Subsequent passes: Values move down the lattice towards `VAR` (Bottom) as more information is gathered from back-edges.

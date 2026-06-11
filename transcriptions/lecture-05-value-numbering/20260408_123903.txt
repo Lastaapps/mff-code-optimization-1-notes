@@ -1,0 +1,57 @@
+# SSA Construction (Cytron et al. '89)
+
+GCC, LLVM ...
+
+## 1) Dominator Tree
+* Almost linear time algorithm
+
+## 2) Dominator Frontiers
+* $DF(x) = \{ y \mid (\exists p \in Pred(y)) : x \text{ dom } p \land \neg(x \text{ sdom } y) \}$
+
+## 3) $\phi$ Placement
+
+---
+
+### Definitions & Properties
+* $A$ dominates $B$ iff every path $Entry \dots B$ contains $A$.
+* $A, A' \text{ dom } B \Rightarrow A \text{ dom } A' \lor A' \text{ dom } A$
+
+### Example CFG
+```
+      [ ENTRY ]
+          |
+         [ A ] ---------+
+          |             |
+         [ B ] <----+   |
+        /   \       |   |
+      [ C ] [ D ] --+   |
+        \   /           |
+         [ E ]          |
+          |             |
+         [ F ] <--------+
+          |
+       [ EXIT ]
+```
+
+### Dominator Tree for the Example
+```
+      [ ENTRY ]
+          |
+         [ A ]
+        /     \
+      [ B ]   [ F ]
+     /  |  \
+   [ C ][ D ][ E ]
+```
+
+### Dominator Frontier Calculations
+* $DF(A) = \emptyset$
+* $DF(B) = \{ F \}$
+* $DF(C) = \{ E \}$
+* $DF(E) = \{ F \}$
+* $DF(F) = \emptyset$
+* $DF(Exit) = \emptyset$
+* $DF(D) = \{ D, E \}$
+
+### Schematic Diagram
+A diagram shows a node $x$ and its dominated subtree $Dom(x)$. The nodes $y$ that are immediate successors of the dominated subtree but are not themselves strictly dominated by $x$ constitute the Dominator Frontier $DF(x)$.

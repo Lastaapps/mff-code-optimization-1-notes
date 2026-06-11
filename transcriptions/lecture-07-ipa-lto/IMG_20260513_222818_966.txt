@@ -1,0 +1,27 @@
+# Alias Analysis, GVN-PRE, and Conditional Execution
+
+## GVN-PRE (Value Numbering based Partial Redundancy Elimination)
+- Mentioned as being a complex pass ("10k lines of code").
+- Replaces definitions by dominating definitions.
+- Performs Full Redundancy Elimination.
+- Example:
+  ```
+  a = L1
+  b = a
+  VN(a) = VN(b)
+  ```
+
+## Memory Redundancy
+- Load elimination:
+  ```
+  t1 = P[I3] // MEM1
+  *q = ...   // May clobber MEM1?
+  t2 = P[I3] // MEM2
+  ```
+- If `*q` does not alias `P[I3]`, then `MEM2` is redundant and `t2` can be replaced by `t1`.
+
+## Conditional Execution / Predication
+- Value numbering can be extended across conditional branches.
+- If we know that in one branch `a == b`, we can record `VN(a) = VN(b)` for that scope.
+- `VN(a) == VN(b)` and `VN(b) == VN(c)` implies `VN(a) == VN(c)`.
+- Diagram showing a decision tree where value numbers are unified based on branch conditions.

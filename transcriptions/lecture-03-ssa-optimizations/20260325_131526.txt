@@ -1,0 +1,14 @@
+# Blackboard Transcription: 20260325_131526.jpg
+
+## Lazy Code Motion (LCM)
+LCM is an improvement over earlier PRE (Partial Redundancy Elimination) algorithms. It aims to eliminate redundancy while also minimizing register pressure.
+
+### Goals of LCM:
+1. **No path contains redundant computation**: Every path from entry to exit should calculate an expression at most once.
+2. **No new computation added to any path**: Ensures safety (the program won't crash due to a moved expression).
+3. **No computation is moved earlier than required by 1 and 2**: This is the "Lazy" part. By postponing the computation as long as possible, we reduce the live ranges of registers.
+
+### References:
+- GCSE (Global Common Subexpression Elimination)
+- GVN PRE (Global Value Numbering based PRE)
+- Mention of "97" likely referring to "Lazy Code Motion" refinements.

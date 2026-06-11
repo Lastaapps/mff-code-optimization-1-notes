@@ -1,0 +1,30 @@
+# Interprocedural Optimization and Inlining
+
+## Inliner Evolution
+- **Bottom-Up Approach**: Traditional inlining in a single translation unit.
+- **Timeline**: 1987...2002 (Early work), 2003 (Modern GCC inliner).
+- **Parser Pipeline**:
+  - `PARSER -> RTC -> OPT -> INTEGRAL -> OPT`
+  - If a function call is known, inline it.
+  - If a function is marked `inline`, remember the body (if less than 100 instructions).
+
+## Greedy Inliner
+1. Parse the whole file (move from function-at-a-time to whole-unit parsing).
+2. Build the **Callgraph (CGRAPH)**.
+3. Greedily mark edges for inlining based on a cost-benefit analysis.
+- Cost metric: `SPEED / SIZE` (Code growth vs. performance gain).
+
+## Inlining Attributes
+- `[[leafify]]`: Force inlining of all calls within a function (flattening the sub-tree).
+- `[[flatten]]`: Similar to leafify, used to eliminate function call overhead in a hot region.
+- `[[always_inline]]`: Force the inliner to ignore cost heuristics.
+
+## Inlining Thresholds
+- **Single Auto**: 50 (Inlining a single call).
+- **Auto**: 75 (General automatic inlining).
+- **Large Function**: Limits for very large functions.
+- **Large Unit Growth**: 200% (Maximum allowed growth of the entire translation unit due to inlining).
+
+## Benchmarks/Projects mentioned
+- POOMA, BOOST, TRAM3D (Known for heavy template usage and inlining pressure).
+- People: Gunter, Richard Bienerth.

@@ -1,0 +1,28 @@
+# Blackboard Transcription: 20260318_133849.jpg
+
+## Dominators in CFG
+
+### Definition
+Basic Block **A dominates** Basic Block **B** ($A \text{ dom } B$) if every path from the **ENTRY** node to **B** contains **A**.
+
+### Dominator Equations (Forward Data-Flow)
+- **Dom(ENTRY)**:
+  $$Dom(\text{ENTRY}) = \{\text{ENTRY}\}$$
+- **Dom(b)**:
+  $$Dom(b) = \{b\} \cup \bigcap_{p \in \text{Pred}(b)} Dom(p)$$
+
+---
+
+## Algorithms and Complexity
+- **Iterative Algorithm**: Simple forward data-flow.
+- **Tarjan / Lengauer-Tarjan (1979)**:
+    - Complexity: $O((n+m) \cdot \alpha(n))$
+    - $\alpha(n)$ is the **Inverse Ackermann function**, which grows extremely slowly (effectively constant for all practical $n$).
+
+---
+
+## CFG Sketch
+A diagram illustrates dominance:
+- `ENTRY` -> `A` -> `B`.
+- In this linear chain, `ENTRY` dominates `A` and `B`, and `A` dominates `B`.
+- A more complex CFG on the right shows a loop and branch structure used to illustrate non-trivial dominance relationships.

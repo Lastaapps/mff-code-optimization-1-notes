@@ -1,0 +1,18 @@
+# Blackboard Transcription: 20260325_133740.jpg
+
+## Lazy Code Motion (LCM) Algorithm Steps
+The full sequence of dataflow analyses required for LCM:
+
+1. **Calculate Local Properties**: $EUSE$ (upward exposed uses) and $KILL$ (redefinitions).
+2. **Anticipancy (Backward)**: Compute where expressions are down-safe.
+3. **Availability (Forward)**: Compute where expressions are available.
+4. **EARLIEST**: Compute the earliest points where it is safe and beneficial to place an expression.
+5. **Postponability (Forward)**: Determine if a computation can be moved later in the CFG without losing the benefits of redundancy elimination.
+6. **LATEST**: The final placement points after "laziness" is applied.
+7. **Transformation**: Insert computations at $LATEST$ and remove original redundant computations.
+
+---
+
+## CFG Example
+A diagram shows a CFG with annotations for $EARLIEST$ and $LATEST$ placement points.
+- The expressions are hoisted to the $EARLIEST$ boundary and then "pushed down" to the $LATEST$ possible blocks.

@@ -1,0 +1,42 @@
+# VISIT STMT(n) / VISIT φ
+
+1. **Symbolic Execution:**
+   - Evaluate the statement or φ-function using current lattice values.
+
+2. **Update Lattice:**
+   - `LATTICE(n) = NewValue`
+   - **IF** the lattice value changed:
+     - **ADD** all executable uses of `n` to `SSAWL`.
+
+3. **Control Flow Handling:**
+   - **IF** the statement is a control flow statement (e.g., `IF`):
+     - **ADD** newly determined executable edges to `FLOW WL`.
+     - (e.g., if a condition evaluates to `TRUE`, add only the `TRUE` edge; if it evaluates to `VARYING`, add all outgoing edges).
+
+---
+
+# Example: SCCP in Action
+
+### CFG Trace:
+- `ENTRY` edge is `EXEC`.
+- **Block 1:** `a = 0; IF a < 10`
+  - `a` becomes `0`.
+  - `a < 10` is `0 < 10` which is `TRUE`.
+  - The `TRUE` edge is marked `EXEC` and added to `FLOW WL`.
+  - The `FALSE` edge remains `NOT EXEC`.
+- **Block 2 (TRUE branch):** `b1 = 0`
+  - `b1` becomes `0`.
+  - Outgoing edge to Block 4 is marked `EXEC`.
+- **Block 3 (FALSE branch):** `b2 = 1`
+  - This block is **never visited** because the incoming edge is never `EXEC`.
+  - `b2` remains `⊤` (Top).
+- **Block 4 (Merge):** `b3 = φ(b1, b2)`
+  - Only the edge from Block 2 is `EXEC`.
+  - `b3 = φ(0, ⊤) = 0`.
+  - Lattice for `b3` is updated to `0`.
+
+### Final Lattice Values:
+- `a = 0`
+- `b1 = 0`
+- `b2 = ⊤`
+- `b3 = 0`

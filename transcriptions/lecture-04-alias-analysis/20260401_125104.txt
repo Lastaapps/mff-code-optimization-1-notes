@@ -1,0 +1,24 @@
+# A Simple Fast Dominance Algorithm
+**Reference:** Cooper, Harvey, Kennedy
+
+## Core Idea
+Represent dominator sets as linked lists ordered by descending **RPO** (Reverse Post Order).
+
+## Formulas
+- $DOM(ENTRY) = \{ENTRY\}$
+- $DOM(B) = \left( \bigcap_{p \in PRED(B)} DOM(p) \right) \cup \{B\}$
+- $DOM(B) = \{B, IDOM(B), IDOM(IDOM(B)), \dots, ENTRY\}$
+
+## Example CFG & Trees
+- **CFG:** 
+  - ENTRY $\to$ A
+  - A $\to$ B, A $\to$ C
+  - B $\to$ D, C $\to$ D
+  - Backedge from D to A.
+- **DFS Tree:**
+  - ENTRY $\to$ A $\to$ B $\to$ D
+  - A $\to$ C
+- **DOM Tree:**
+  - ENTRY $\to$ A
+  - A $\to$ B, A $\to$ C, A $\to$ D
+  - (Since both B and C are predecessors of D, and A is their common dominator, IDOM(D) = A).

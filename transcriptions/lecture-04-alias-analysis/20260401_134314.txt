@@ -1,0 +1,18 @@
+# Iterated Dominance Frontier ($DF^+$)
+
+**Definition:**
+- $DF_1(X) = DF(X)$
+- $DF_2(X) = DF(X \cup DF_1(X))$
+- $\dots$
+- $DF^+(X) = \lim_{i \to \infty} DF_i(X)$
+
+Where $DF(X) = \bigcup_{B \in X} DF(B)$.
+
+**Theorem:**
+If $X$ contains the ENTRY node, then $J^+(X) = DF^+(X)$.
+
+# phi ($\phi$) Placement Algorithm
+
+For every variable $V$:
+1. $X$ = set of all Basic Blocks (BB) defining $V$ (including the ENTRY node if it provides an initial value).
+2. Insert a $\phi$ function for $V$ (e.g., $V = \phi(V, \dots, V)$) at the beginning of every Basic Block $B \in DF^+(X)$.

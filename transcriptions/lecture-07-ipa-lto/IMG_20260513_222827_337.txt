@@ -1,0 +1,17 @@
+# Uses of Alias Oracle and MODREF
+
+## Uses of Alias Oracle
+An alias oracle is essential for many optimizations:
+- **GVN elimination of redundant loads**: Knowing that a store doesn't hit a certain memory location allows reusing a previously loaded value.
+- **Dead store removal**: If a store is followed by another store to the same location without an intervening read, the first store is dead.
+- **Store sinking**: Moving memory operations out of loops (post-loop) if they are not needed inside.
+- **Loop optimizations**: Vectorization, loop unrolling, and software pipelining depend heavily on alias information.
+- **Instruction scheduling**: Determining the safe order of instructions to maximize pipeline usage.
+
+## New Oracle: MODREF (Modified & Referenced)
+- MODREF is a more advanced interprocedural analysis.
+- It tracks:
+  - **TBAA access tree**: Type-based disambiguation.
+  - **Loads/stores relative to parameters**: e.g., identifying that a function only touches the `this` pointer or specific arguments.
+  - **PTA flags**: Points-to analysis state.
+- It provides a more fine-grained "clobber" information than simple "may alias" checks.

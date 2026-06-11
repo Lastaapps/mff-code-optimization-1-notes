@@ -1,0 +1,28 @@
+# SCCP (Sparse Conditional Constant Propagation)
+
+1. **Initialization:**
+   - `SSAWL = ∅` (SSA Worklist)
+   - `FLOW WL = { ENTRY → StartBB }` (Flow Worklist)
+   - `∀n ∈ SSA_NAMES: LATTICE(n) = ⊤` (Top)
+   - `∀e ∈ E(CFG): EXEC(e) = FALSE`
+
+2. **Main Loop:**
+   - `WHILE (SSAWL ≠ ∅ OR FLOW WL ≠ ∅)`
+   
+   - **Processing Flow Worklist:**
+     - `IF FLOW WL ≠ ∅:`
+       - `e = POP FLOW WL`
+       - `IF EXEC(e) == FALSE:`
+         - `EXEC(e) = TRUE`
+         - `VISIT φ-functions in e.dest`
+         - `IF (e is the first executable edge to e.dest):`
+           - `VISIT all statements in e.dest`
+         - `IF (e.dest has only one outgoing edge e_out):`
+           - `ADD e_out TO FLOW WL`
+
+   - **Processing SSA Worklist:**
+     - `IF SSAWL ≠ ∅:`
+       - `n = POP SSAWL`
+       - `FOR each statement (or φ) s that uses n:`
+         - `IF (any incoming edge to s.block is EXEC):`
+           - `VISIT s`

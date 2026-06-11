@@ -1,0 +1,20 @@
+# Blackboard Transcription: 20260318_134206.jpg
+
+## Properties of Dominance
+
+Dominance defines a **Partial Order** on the set of Basic Blocks.
+
+### Key Properties
+1. **Reflexivity**: $A \text{ dom } A$.
+2. **Transitivity**: $(A \text{ dom } B) \land (B \text{ dom } C) \implies A \text{ dom } C$.
+3. **Anti-symmetry**: $(A \text{ dom } B) \land (B \text{ dom } A) \implies A = B$.
+4. **Dominator Tree Property**: If $A$ and $A'$ both dominate $B$, then either $A \text{ dom } A'$ or $A' \text{ dom } A$.
+    - This implies that the immediate dominator of each node is unique, forming a **Dominator Tree**.
+5. **Entry Dominance**: `ENTRY` dominates every node reachable from it.
+
+---
+
+## Diagrams
+- Linear chain: `ENTRY` -> `A` -> `B`.
+- Tree structure: `ENTRY` -> `A` -> `B` and `A` -> `R` -> `A` -> `C` (demonstrating how dominance paths work).
+- The "either-or" property is highlighted as the basis for the tree structure.

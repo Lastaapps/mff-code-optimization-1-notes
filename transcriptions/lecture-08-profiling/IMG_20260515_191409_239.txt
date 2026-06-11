@@ -1,0 +1,24 @@
+# Advanced IPA Passes
+
+## ICF: Identical Code Folding
+- Detects functions that have the same body (even if they have different names or types).
+- Folds them into a single implementation to save space.
+
+## IPA-CP: Interprocedural Constant Propagation
+- Propagates constant values across function calls.
+- **Cloning**: Creating a specialized version of a function for a specific constant argument.
+- **Value Ranges**: Propagating the range of possible values (e.g., `[0, 10]`) instead of just single constants.
+- **Devirtualization**: Converting virtual calls to direct calls if the actual type can be determined interprocedurally.
+
+## Key Contributors
+- Josef Meccr, Remy Zadeck, David Cepeck, Filip Kasl.
+
+## Other IPA Passes
+- **IPA-PTA**: Interprocedural Points-To Analysis.
+- **MODREF**: Modified and Referenced analysis (clobber detection).
+- **Visibility**: Analyzing if symbols are hidden, protected, or exported (helps in devirtualization and dead code elimination).
+
+## Theory
+- Mention of the "Aho" book (Compilers: Principles, Techniques, and Tools).
+- Example of interprocedural analysis on a simple function `foo(a, b)`.
+- Use of callgraphs for tracking dataflow between functions.

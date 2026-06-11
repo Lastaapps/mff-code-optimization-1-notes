@@ -1,0 +1,7 @@
+# Blackboard Transcription: 20260325_125114.heic
+
+## CFG Transformation: Edge Splitting
+Diagram showing the insertion of a new block during Partial Redundancy Elimination (PRE).
+
+- **"blok navíc"**: (Czech for "extra block") Indicates a synthetic block created by splitting a critical edge.
+- **Purpose**: Provides a landing pad for hoisted expressions. By placing `A+B` in this new block, we ensure it's calculated on paths where it's needed (redundancy elimination) without introducing it to paths where it wasn't previously computed (maintaining safety).

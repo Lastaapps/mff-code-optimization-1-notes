@@ -1,0 +1,18 @@
+# Single Static Assignment Form (SSA)
+
+**Date/Context:** 1989
+**Authors:** Cytron, Ferrante, Rosen, Wegman, Zadeck
+
+**Definition:**
+A Control Flow Graph (CFG) is in SSA form if each variable has precisely 1 definition.
+
+**Diagrams:**
+1. **Loop Example:**
+   - Entry block: `I = 0`
+   - Loop header: `I = phi(I_0, I_1)`
+   - Loop body: `I_1 = I + 1`, `IF I_1 < 10`
+   - Backedge from body to header.
+   - Exit edge from body.
+
+2. **Abstract CFG:**
+   - A diagram showing multiple blocks and their interconnections, illustrating the structure of a CFG.

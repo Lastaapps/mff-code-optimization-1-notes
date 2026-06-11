@@ -1,0 +1,20 @@
+# Blackboard Transcription: 20260318_132921.jpg
+
+## Partial Redundancy Elimination (PRE)
+
+### Concept
+PRE is a powerful optimization that combines Common Subexpression Elimination (CSE) and Loop Invariant Code Motion (LICM). It eliminates expressions that are redundant on some, but not necessarily all, paths.
+
+### Diagram
+The blackboard shows a CFG where:
+1. An expression `A + B` is computed in two different branches.
+2. In a successor block where these branches merge, `A + B` is computed again.
+3. This third computation is **redundant** because it was already computed on any path reaching this block.
+
+- Mention of "98" (likely referring to the year of a significant paper or GCC implementation update).
+
+---
+
+## Transformation Sketch
+- The redundant expression `A + B` in the bottom block is crossed out.
+- The goal of PRE is to move such computations to the earliest possible point (anticipability) where they are still useful.

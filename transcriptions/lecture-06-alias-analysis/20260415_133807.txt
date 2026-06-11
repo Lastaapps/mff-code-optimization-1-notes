@@ -1,0 +1,31 @@
+# CD-DCE (Control Dependency Dead Code Elimination)
+
+CD-DCE is a more aggressive form of Dead Code Elimination that correctly handles control flow by using Control Dependence information.
+
+### Algorithm Steps:
+
+1. **Initialization:**
+   - `LIVE(BB) = FALSE` (All basic blocks initially marked as not live).
+   - `LIVE(STMT) = FALSE` (All statements initially marked as not live).
+
+2. **Marking Seed Statements:**
+   - Mark **trivially live** statements as `LIVE`.
+   - These include:
+     - Statements with side effects (I/O, memory stores).
+     - Function calls that might have side effects.
+     - Return statements.
+     - Volatile operations.
+
+3. **Liveness Propagation (Fixed Point):**
+   - While the set of `LIVE` statements or blocks changes:
+     - **Data Dependency:** If statement `S` is `LIVE`, mark the definitions of all its operands as `LIVE`.
+     - **Control Dependency:** If a statement `S` in basic block `BB` is `LIVE`:
+       - Find all basic blocks `B` that `BB` is **Control Dependent** on.
+       - Mark the terminator statement (the `IF` or `SWITCH`) of each such block `B` as `LIVE`.
+       - This ensures that the control flow leading to the execution of `S` is preserved.
+
+### Diagram Context:
+- The diagram shows a block `C` which contains a live statement.
+- Block `C` is reached through block `D`, which is reached via a branch from block `B`.
+- If `C` is `LIVE`, then the condition in `B` that decides whether to go towards `D` (and eventually `C`) or to `EXIT` must be preserved.
+- This prevents the compiler from "optimizing away" branches that are essential for reaching live code.

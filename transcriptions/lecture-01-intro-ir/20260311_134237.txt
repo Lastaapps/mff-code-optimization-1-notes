@@ -1,0 +1,27 @@
+# Blackboard Transcription: 20260311_134237.jpg
+
+## Liveness Analysis
+
+### Definition (DEF)
+A variable `a` is **live** at a given point `p` in the program if and only if (IFF) there exists an execution path that:
+1. **Defines** `a` before point `p`.
+2. **Uses** `a` after point `p` but **before** any subsequent re-definition (DEF) of `a`.
+
+---
+
+### Visualization of Liveness at Point `p`
+The middle diagram shows a timeline of a variable:
+- **`a = ...`** (Definition)
+- ... path ...
+- **`p`** (The point where we check liveness)
+- ... path ...
+- **`... = a`** (Use)
+If this sequence exists without another `a = ...` in between, `a` is live at `p`.
+
+---
+
+### Liveness in CFG (Right Diagram)
+The diagram shows how liveness is a **backward data-flow** property:
+1. **Source of Liveness**: A block where `a` is used (e.g., the bottom block containing `... = a`).
+2. **Propagation**: Liveness flows backwards through the edges of the CFG.
+3. **Sink of Liveness**: A block where `a` is defined (e.g., the top block `a = ...`). Once the definition is reached (moving backwards), the variable is no longer live "above" that point.

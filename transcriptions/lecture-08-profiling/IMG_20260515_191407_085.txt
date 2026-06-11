@@ -1,0 +1,21 @@
+# ThinLTO and Lightweight IPA
+
+## Author: Xinliang David Li (Google)
+- Introduced a more scalable version of LTO.
+
+## Traditional LTO vs ThinLTO
+- **Traditional LTO**: Requires all IR to be in memory during WPA (Whole Program Analysis). This can be a bottleneck for very large projects (Warehouse scale).
+- **ThinLTO**:
+  - Uses **Summaries** (Function signatures, call sites, basic profile info).
+  - **Thin Linking**: Only the summaries are linked.
+  - **Distributed Backend**: Each translation unit can be optimized in parallel, importing only the necessary IR from other units as needed.
+
+## Compilation Models
+- **Workstation**: Normal local build.
+- **Cluster/Warehouse**: Large scale builds where memory and time are critical.
+
+## Technical Details
+- `-fthin-lto` / `-fthin-lfo`.
+- **Thin linking summaries**: Small files describing the function characteristics.
+- **Import/Export**: Functions are imported from other files only if the inliner decides they are hot enough.
+- Example: `foo()` calls `bar()`. If `bar` is in another unit but is small, ThinLTO imports `bar`'s IR into `foo`'s unit for inlining.

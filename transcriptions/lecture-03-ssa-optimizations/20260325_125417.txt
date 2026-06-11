@@ -1,0 +1,17 @@
+# Blackboard Transcription: 20260325_125417.jpg
+
+## Critical Edges
+**Definition:** An edge $B \to B'$ is called **critical** if:
+- Basic Block $B$ has **multiple successors**.
+- Basic Block $B'$ has **multiple predecessors**.
+
+Splitting critical edges is a prerequisite for many code motion optimizations (like PRE and LCM) to avoid the "lost update" or "incorrect placement" problems.
+
+---
+
+## CFG Sketch
+- A diagram on the left shows a critical edge between two blocks being split by a yellow highlighted block.
+- A diagram on the right shows an SSA-like structure with $\phi$ nodes:
+  - Calculation of `A+B`.
+  - A join point with a $\phi$ node.
+  - Subsequent use of `A+B`.

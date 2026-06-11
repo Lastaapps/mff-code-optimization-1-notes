@@ -1,0 +1,25 @@
+# Blackboard Transcription: 20260318_124622.jpg
+
+## Data-Flow Convergence and Iterative Analysis
+
+### Order of Execution
+- **REVERSE POSTORDER (TOPOLOGICAL ORDER)**:
+    - On a **DAG** (Directed Acyclic Graph) $\implies 2$ iterations are sufficient.
+
+### Convergence Results (Kam & Ullman, ~1972)
+- For **REDUCIBLE CFG**, the iterative data-flow analysis will terminate in $d(CFG) + 3$ iterations (some sources say $d(CFG) + 2$).
+- **$d(CFG)$ (Loop Connectivity)**: The maximal number of backward edges in any cycle-free path in the CFG.
+
+---
+
+## CFG Example
+A diagram of a CFG with the following structure:
+1. **ENTRY** block
+2. **Block 1**: `a = ...`
+3. **Block 2**: A loop header (with a back-edge from Block 3).
+4. **Block 3**: Contains a use of `a`.
+5. **EXIT** block
+
+The diagram illustrates how liveness information for variable `a` propagates through the loop.
+- Red numbers $(1, 2, 3, 4)$ next to blocks likely indicate the post-order or reverse post-order traversal.
+- Symbols like $\{a\}$ and $\emptyset$ indicate the liveness set at various points during iterations.

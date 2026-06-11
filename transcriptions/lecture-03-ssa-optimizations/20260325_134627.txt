@@ -1,0 +1,26 @@
+# Blackboard Transcription: 20260325_134627.jpg
+
+## IBM XL Compiler Optimizations
+The left side mentions historical/specific implementation techniques:
+1. **Incremental Dataflow**: Using intervals for analysis.
+2. **Sparse Dataflow**: Using Def-Use (DU) and Use-Def (UD) chains.
+3. **Region Based Optimization (SESE)**: Working on Single-Entry Single-Exit regions.
+
+## Factored Use-Def (FUD) Chains
+- A diagram shows a central node connecting multiple definitions ($a_1, a_2, \dots$) to a single use.
+- Labeled as **FUD (Factored Use-Def)** or **Factored SSA**. This was a precursor/alternative to standard SSA form used in some compilers (like IBM XL or early GCC).
+
+## Common Subexpression Elimination (Refined)
+### Partially Available Expressions (After Busy Code Motion)
+**Forward Analysis**
+
+$$AV IN(B) = \bigcap_{P \in PRED(B)} AV OUT(P)$$
+
+$$AV OUT(B) = ANT IN(B) \cup (AV IN(B) \setminus KILL(B))$$
+*(Note: In the second equation, $EUSE(B)$ was crossed out and replaced with $ANT IN(B)$, reflecting the context of PRE/LCM where anticipancy defines potential availability)*
+
+---
+
+## SSA Placement Mention
+- Discussion on where to place $\phi$ nodes.
+- Mention of **Dominance Frontiers ($DF$)** (though less explicit in this specific frame, it fits the lecture context).

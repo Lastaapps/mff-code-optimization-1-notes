@@ -1,0 +1,18 @@
+# Blackboard Transcription: 20260325_124428.jpg
+
+## Global Common Subexpression Elimination (CSE)
+### Partially Available Expressions
+**Forward Analysis**
+
+$$PAV IN(B) = \bigcap_{P \in PRED(B)} PAV OUT(P)$$
+*(Note: Red annotations suggest "Partially" was added to the standard Available Expressions definition)*
+
+$$PAV OUT(B) = EUSE(B) \cup (PAV IN(B) \setminus KILL(B))$$
+
+---
+
+## Partial Redundancy Elimination (PRE)
+**Reference: Knoop, Rüthing, Steffen '92**
+
+**Definition:** Expression $E$ is **partially redundant** if **some** path from entry to $E$ calculates $E$ before.
+*(Note: Text partially cut off on the right)*

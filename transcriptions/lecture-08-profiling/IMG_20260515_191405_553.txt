@@ -1,0 +1,34 @@
+# Link-Time Optimization (LTO)
+
+## LTO History and Context
+- **Started around 2005+**.
+- Adoption:
+  - **Firefox**: 2005-2010 (Major user and driver of LTO performance).
+  - **IBM, Google, CodeSourcery**: Major contributors to GCC LTO.
+  - 2008: `-flto` becomes default for some high-performance builds.
+
+## WHOPR (Whole Program)
+- "Memory Dump" style of LTO: Dumping the IR into a file and reading it back at link time.
+- GCC `-flto` implementation.
+
+## LTO Resolution and Symbols
+- Linker provides symbol resolution information to the compiler.
+- **Symbol States**:
+  - `UNDEF`: Undefined.
+  - `PREVAILING`: The version of the symbol that will be used.
+  - `PREVAILING_IR`: The IR version of the symbol is prevailing.
+  - `PREVAILED`: This version was skipped in favor of another.
+
+## LTO Pipeline (WPA / LTRANS)
+1. **LGEN (Local Generation)**: Compile each file to object files containing GIMPLE IR.
+2. **WPA (Whole Program Analysis)**:
+   - Read all summaries.
+   - Build the global callgraph.
+   - Perform IPA (Inlining, CP, etc.).
+   - Partition the program into "units".
+3. **LTRANS (Local Transformation)**:
+   - Stream the partitioned IR to multiple backends for parallel code generation.
+   - Generate final machine code.
+
+## LTO Streaming
+- Efficiently serializing the IR, types, and symbol table for the linker plugin.

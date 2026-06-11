@@ -1,0 +1,17 @@
+# Blackboard Transcription: 20260311_124851.jpg
+
+## Lattice of Values
+The diagram shows a flat lattice for constant propagation:
+- **Top Element**: (Implied "Undefined" or "Top")
+- **Middle Elements**: `0`, `1`, `2`, ... (all constant values)
+- **Bottom Element**: `VAR` (also known as "Any" or "Bottom", representing a non-constant value)
+
+The meet operation (∧) behavior:
+- `X ∧ X = X` (Idempotency)
+- `X ∧ Y = VAR` (if X ≠ Y, the result is non-constant)
+
+---
+
+## Solutions to Dataflow Analysis
+1. **CONSERVATIVE**: A solution that is always "safe" or "correct" (must not over-optimize).
+2. **MAXIMAL**: The best possible conservative solution (MFP - Maximal Fixed Point).

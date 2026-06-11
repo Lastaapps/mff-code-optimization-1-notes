@@ -1,0 +1,28 @@
+# Advanced Constant Propagation and Range Analysis
+
+### 1) Bitwise CCP (Constant Propagation)
+- **Concept:** Instead of tracking a single constant value for a variable, the compiler tracks the state of each individual bit.
+- **Lattice per bit:**
+  - `⊤` (Top): Bit is unknown (uninitialized or not yet reached).
+  - `0`: Bit is definitely 0.
+  - `1`: Bit is definitely 1.
+  - `⊥` (Bottom): Bit is varying (could be either 0 or 1).
+- **Representation:** A bitmask of "known" bits and a bitmask of "values" for those known bits.
+- **Benefit:** Enables optimizations for bitwise operations (e.g., `a & 0xF0`, `a | 1`) and can discover constants that standard CCP misses.
+- **References:** Briggs, Hack (notable researchers in the field).
+
+### 2) Value Range Analysis
+- **Lattice of Ranges:**
+  - `⊤` (Top)
+  - `[0, 0]`, `[1, 1]`, `[2, 2]` ... (Constants)
+  - `[0, 1]`, `[1, 2]` ... (Sub-ranges)
+  - `...`
+  - `⊥` (Bottom, e.g., `[-∞, +∞]`)
+- **Operations:**
+  - `[a, b] ⊔ [c, d] = [min(a, c), max(b, d)]` (Join operation in the lattice).
+- **Project Ranger (GCC):**
+  - A modern, demand-driven range propagation engine in GCC.
+  - Unlike older VRP (which used `ASSERT_EXPR`), Ranger can calculate ranges on-the-fly for any point in the CFG.
+  - It handles complex constraints like `a != 4` or `a != 0`.
+  - For `a != 0`, the range might become `[1, +∞]` (for unsigned) or `[-∞, -1] ∪ [1, +∞]`.
+  - It can leverage bitwise information (from CCP) to refine value ranges and vice-versa.

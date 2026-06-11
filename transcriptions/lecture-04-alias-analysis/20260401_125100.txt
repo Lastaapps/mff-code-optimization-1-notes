@@ -1,0 +1,16 @@
+# SSA Construction Steps
+
+1. **Computing Dominators**
+   - Reference: Lengauer & Tarjan, 1979
+   - Complexity: $O((n+m) \alpha(m))$ where $\alpha$ is the Inverse Ackermann function.
+2. **Compute Dominance Frontiers**
+3. **phi ($\phi$) Placement**
+4. **Renaming** (SSA Names)
+
+## Dominance Definition
+**DEF:** B DOM C iff every path Entry $\to$ C contains B.
+
+**Properties:**
+- Dominators form a tree.
+- Complexity: $O(n)$ for tree representation.
+- IF B DOM C, THEN B is a predecessor of C in the DFS tree.

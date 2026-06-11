@@ -1,0 +1,47 @@
+# RPO-GVN: Reverse Postorder Global Value Numbering
+
+## Algorithm
+```
+∀ SSA NAME n: VN[n] = ⊤ (Top)
+REPEAT UNTIL VN STABILIZES:
+    FOR ALL BB B IN RPO (Reverse Postorder):
+        FOR ALL DEF x IN B:
+            VN[x.dest] = LOOKUP(x.op, VN[x[0]], VN[x[1]], ...)
+DELETE HASHTABLE
+```
+
+## SSA Example with Phi Functions
+```
+Block 1:
+  I1 = 0
+  J1 = 0
+  K1 = I + 1
+
+Block 2 (Loop Header):
+  I2 = φ(I1, I3)
+  J2 = φ(J1, J3)
+  I3 = I2 + 1
+  J3 = J2 + 1
+  IF I2 < 10 GOTO Block 2
+  ELSE GOTO EXIT
+
+EXIT:
+  ...
+```
+
+## Value Numbering Table
+- Iteration 1:
+  - `I2 = φ(0, ⊤) = 0`
+  - `J2 = φ(0, ⊤) = 0`
+  - `I3 = 0 + 1 = 1`
+  - `J3 = 0 + 1 = 1`
+- Iteration 2:
+  - `I2 = φ(0, 1) = VN3`
+  - `J2 = φ(0, 1) = VN3`
+  - `I3 = VN3 + 1`
+  - `J3 = VN3 + 1`
+- Eventually `VN(I2) == VN(J2)` and `VN(I3) == VN(J3)`.
+
+## Optimistic Initialization
+- Initializing to `⊤` allows the algorithm to discover equalities that a pessimistic approach (starting with all values distinct) would miss, especially in loops.
+- `φ(VN1, VN2)` simplifies to `VN1` if `VN2` is `⊤`.

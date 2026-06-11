@@ -23,16 +23,17 @@ This directory contains detailed notes and study materials for the course **Code
 
 ## Project Structure
 
-- **notes/**: The primary directory containing markdown files with technical notes.
-- **blackboards/**: A symlink to external storage containing lecture blackboard images.
-- **transcriptions/**: (Planned) Directory for OCR-transcribed text from blackboard images, organized by lecture.
+- **notes/**: The primary directory where new, comprehensive lecture notes are generated.
+- **notes-src/**: Contains old/original notes and materials used as reference.
+- **blackboards/**: Contains lecture blackboard images. **DEPRECATED**: Use `transcriptions/` instead.
+- **transcriptions/**: Directory for OCR-transcribed text from blackboard images, organized by lecture. This is the primary source for generating notes.
 
 ## Workflow
 
-1.  **OCR Transcription**:
-    *   Transcribe images from `blackboards/` into a new directory.
-    *   Naming convention: `transcriptions/<lecture_number>/<original_image_name>.txt`.
-2.  **Note Creation**:
-    *   Generate one markdown note per syllabus topic.
-    *   Synthesize information from existing notes, transcriptions, and GCC documentation.
-    *   Prioritize technical precision and illustrative examples.
+1.  **OCR Transcription**: (Completed)
+    *   Transcribed all images from `blackboards/` into `transcriptions/`.
+    *   **Rule**: Never use original images from `blackboards/`. Always use the transcriptions in `transcriptions/`.
+2.  **Note Generation**: (In Progress)
+    *   Generate one markdown note per lecture topic into the `notes/` directory.
+    *   Synthesize information from `transcriptions/`, existing notes in `notes-src/`, and GCC documentation.
+    *   Prioritize technical precision, illustrative examples, and mathematical notation.

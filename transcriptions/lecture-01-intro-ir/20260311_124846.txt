@@ -1,0 +1,48 @@
+# Blackboard Transcription: 20260311_124846.jpg
+
+## Scalar Optimization
+- **Constant Prop (CP / Const Prop)**
+- **Common Sub Ellim (CSE)**
+- **Copy Propagation**
+- **Dead Code Ellimination (DCE)**
+    - **Local**: BB -> SB -> EBB (60's - 70's, '97)
+    - **Global**: CFG
+    - **Inter-Proc**
+
+---
+
+## Data-Flow Analysis Example (CFG)
+A diagram illustrating constant propagation through a simple IF-ELSE structure:
+
+1. **Top level**: `a = UND` (Undefined)
+2. **IF statement**:
+    - **Left Branch**: `a = 0`
+    - **Right Branch**: `a = 1`
+3. **Merging**: The branches merge before reaching block 4.
+4. **Block 4**: `b = a`
+
+**Lattice state evolution**:
+- At entry of IF: `a = UND`
+- Exit of Left Branch: `a = 0`
+- Exit of Right Branch: `a = 1`
+- After merge: `a = VAR` (Variable/Unknown constant) because `0 ∧ 1 = VAR`.
+
+---
+
+## Meet (Join Operation) ∧
+The meet operation defines how values from different paths are combined:
+- `0 ∧ 0 = 0`
+- `0 ∧ 1 = VAR`
+- `VAR ∧ * = VAR`
+
+**Data-Flow Analysis**
+- (Gary Kildall, 1973)
+- CPM 70's - 80's
+- **Semi-Lattice** of values to propagate (referred to as "Polosvaz" in Czech context).
+
+---
+
+## Jump-Functions
+Used to model the effect of a Basic Block (BB) on the data-flow state:
+- Diagram shows a block `B` with input `X` and output `Y`.
+- Function: `J_B(X) = Y`

@@ -1,0 +1,20 @@
+# Blackboard Transcription: 20260318_122903.jpg
+
+## Liveness Analysis (Data-Flow Equations)
+
+### Definitions
+- **Local Live(b)**: Set of all variables that are used before being defined in Basic Block `b`.
+- **kill(b)**: Set of all variables defined in Basic Block `b` and not used before the definition.
+
+### Equations
+- **LIVE IN(b)**:
+  $$LIVE IN(b) = \text{Local live}(b) \cup (LIVE OUT(b) \setminus \text{kill}(b))$$
+- **LIVE OUT(b)**:
+  $$LIVE OUT(b) = \begin{cases} \emptyset & \text{if } b = \text{EXIT} \\ \bigcup_{s \in \text{Succ}(b)} LIVE IN(s) \end{cases}$$
+
+---
+
+## CFG Diagram Sketch
+A simple diagram shows a block with multiple predecessors and successors, illustrating the flow of liveness information backwards through the graph.
+- Input to block (from successors): `LIVE OUT`
+- Output from block (to predecessors): `LIVE IN`

@@ -1,0 +1,39 @@
+# SCCP Example with Loop
+
+### Control Flow Graph (CFG) Description:
+1. **Block 1:** `a1 = 0`
+   - Initial assignment.
+2. **Block 2 (Loop Header):** `a2 = φ(a1, a3); a3 = a2 + 1; IF a2 < 10`
+   - `a2` is the loop induction variable in SSA form.
+   - `a3` is the incremented value.
+   - The loop condition is `a2 < 10`.
+   - **T (True) edge** loops back to the start of Block 2.
+   - **F (False) edge** exits the loop to Block 3.
+3. **Block 3:** `b1 = 0`
+   - Reached when loop terminates.
+4. **Block 4:** `b2 = 1`
+   - This block is drawn but has **no incoming executable edges** in this example.
+5. **Block 5 (Merge):** `b3 = φ(b1, b2); IF a2 < 100`
+   - Merges values from Block 3 and Block 4.
+   - `b3` is defined by a φ-function.
+
+---
+
+### Lattice Value Transitions:
+- **a1:** `0` (Constant)
+- **a2:** `⊤` → `0` → `⊥` (Varying)
+  - Initially `⊤`.
+  - After first visit: `φ(0, ⊤) = 0`.
+  - After backedge is marked `EXEC` (since `0 < 10` is `TRUE`): `φ(0, 1) = ⊥`.
+- **a3:** `⊤` → `1` → `⊥`
+  - `0 + 1 = 1`.
+  - `⊥ + 1 = ⊥`.
+- **b1:** `0` (Constant)
+- **b2:** `⊤`
+  - Never reached, so it stays at Top.
+- **b3:** `⊤` → `0`
+  - When Block 3 becomes `EXEC`, `b3 = φ(0, ⊤) = 0`.
+  - Since Block 4 never becomes `EXEC`, `b2` never contributes a value other than `⊤`.
+
+### Key Insight:
+Even though `a2` becomes `⊥` (Varying), the branch to `b2 = 1` is never taken in this specific trace (if we assume the loop condition eventually becomes false and exits to `b1`), or perhaps the example is showing that `b2` is just unreachable code. Because `b2` is never reached, `b3` can be determined to be the constant `0`.

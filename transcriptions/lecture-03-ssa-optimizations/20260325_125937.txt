@@ -1,0 +1,11 @@
+# Blackboard Transcription: 20260325_125937.jpg
+
+## Loop Invariant Code Motion (LICM)
+The blackboard shows a CFG with a loop and how an expression `A+B` can be moved.
+
+- **Loop Structure**: A header block leads to a body containing `A+B`, which then loops back or exits.
+- **Hoisting**: The expression `A+B` is moved from the loop body to a **pre-header** block.
+- **Visuals**:
+  - Red arrow: Control flow path through the loop.
+  - Yellow arrow: Indicates the hoisting of `A+B` out of the loop.
+  - This is only safe if `A+B` is loop-invariant (operands $A$ and $B$ are not modified within the loop).

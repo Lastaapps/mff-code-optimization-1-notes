@@ -1,0 +1,27 @@
+# Join Sets and SSA Concepts (Lecture Notes Summary)
+
+## Join Sets
+$X \subseteq V(CFG)$
+
+$J(X) = \{C \in V(CFG) \mid \exists A, B \in X, A \neq B, \text{ path } p: A \to C, q: B \to C \text{ s.t. } C \text{ is the first common BB on } p, q\}$
+
+- **X:** set of all definitions of variable A.
+- **J(X):** set of basic blocks where a $\phi$ (Phi) function is needed.
+
+## Iterated Join
+- $J_1 = J(X)$
+- $J_2 = J(X \cup J_1(X))$
+- $J^+ = \lim_{i \to \infty} J_i$
+
+## Iterated Dominance Frontier
+- $DF(X) = \{DF(B) \mid B \in X\}$
+- $DF_1(X) = DF(X)$
+- $DF_2(X) = DF(X \cup DF_1(X))$
+- $DF^+(X) = \lim_{i \to \infty} DF_i(X)$
+
+**Theorem:** If $X$ contains ENTRY, $J^+(X) = DF^+(X)$.
+
+## Phi Placement
+**For every variable V:**
+1. $X$ = set of all BB defining $V$ (including ENTRY).
+2. Insert $\phi$ at the beginning of every $B \in DF^+(X)$.

@@ -1,0 +1,17 @@
+# SSA Construction: Summary of Steps
+
+1. **Dominator Tree**
+   * Almost linear time algorithm.
+
+2. **Dominator Frontiers**
+   * $DF(x) = \{ y \mid (\exists p \in Pred(y)) : x \text{ dom } p \land \neg(x \text{ sdom } y) \}$
+
+3. **$\phi$ Placement**
+   * Placed on the iterated dominator frontier $DF^+$.
+
+4. **Renaming**
+   * Performed via a Depth-First Search (DFS) on the dominator tree.
+
+### Resulting Forms
+* **Minimal SSA Form**: After $\phi$ placement and renaming.
+* **Pruned SSA Form**: Further optimization to remove dead $\phi$ functions (variable not live at the start of the block).

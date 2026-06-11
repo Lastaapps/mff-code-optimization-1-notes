@@ -1,0 +1,23 @@
+# VRP and ASSERT_EXPR in SSA
+
+Value Range Propagation (VRP) in production compilers (like GCC) often uses special expressions to represent known constraints on variables within specific code paths.
+
+### Materializing Ranges:
+When a conditional branch is taken, the compiler can "assert" a fact about a variable.
+
+**Example from Blackboard:**
+```
+a = ...
+IF a == 1:
+   T: a2 = ASSERT_EXPR(a, a == 1)
+      ... = a2
+```
+
+- In the `TRUE` branch of `IF a == 1`, the compiler knows that `a` must be `1`.
+- To propagate this information effectively in SSA form, it creates a new SSA name `a2`.
+- `a2` is defined as `a` but with the added constraint that its value is `1`.
+- Subsequent uses of `a` in this branch are replaced by `a2`.
+- This technique allows standard propagation algorithms (like SCCP or VRP) to work on the SSA graph without needing to constantly check the path constraints.
+
+### GCC Context:
+In GCC, these `ASSERT_EXPR` nodes are inserted during the VRP pass to make range information explicit in the IL (Intermediate Language).

@@ -1,0 +1,20 @@
+# Blackboard Transcription: 20260318_124951.jpg
+
+## Irreducible Control Flow
+
+### Reducible vs. Irreducible CFG
+- **Reducible CFG**: Can be collapsed into a single node by repeated application of T1 and T2 transformations.
+- **Irreducible CFG**: Contains cycles that cannot be entered only through a single header (e.g., jumps into the middle of a loop).
+    - Note on board: "Irreducible control flow po použití goto" (after using goto).
+
+---
+
+## Iterative Analysis Complexity
+- Height of lattice: $d(CFG) + 3$ iterations (or $+2$).
+- **Loop Connectivity ($d$)**: Maximal number of back-edges on any path.
+
+### Diagrams
+1. **Reducible Loop**: A standard loop where the header is the only entry point.
+2. **Irreducible Loop**: A diagram showing two entry points into a cycle, creating an irreducible structure.
+    - Path from ENTRY to both nodes in the cycle.
+3. **CFG with Goto**: A more complex diagram showing blocks with multiple cross-edges that break reducibility.

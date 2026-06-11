@@ -1,0 +1,27 @@
+# Blackboard Transcription: 20260318_134927.jpg
+
+## CFG to Dominator Tree
+
+### CFG Diagram (Left)
+- **ENTRY**
+- **Block A**: Successors B and C.
+- **Block B**: Successor D.
+- **Block C**: Successor D.
+- **Block D**: Successor EXIT and back-edge to A.
+- **EXIT**
+
+### Dominator Tree (Right)
+The dominator tree represents the immediate dominance relationships.
+
+- **ENTRY** (0, 11)
+  - **A** (1, 10)
+    - **B** (2, 3)
+    - **C** (4, 5)
+    - **D** (6, 9)
+      - **EXIT** (7, 8)
+
+#### DFS Traversal Numbers
+The pairs $(in, out)$ next to each node indicate the entry and exit times during a Depth-First Search (DFS) of the dominator tree:
+- `A` is the immediate dominator of `B`, `C`, and `D`.
+- `D` is the immediate dominator of `EXIT`.
+- Note: Although `D` has predecessors `B` and `C` in the CFG, its immediate dominator is `A` because `A` is the last node common to all paths reaching `D`.

@@ -1,0 +1,19 @@
+# Renaming in SSA
+
+## Algorithm
+1. **Process CFG in DFS order.**
+2. **Remember current definition of every variable.**
+3. **Replace uses by the current definition.**
+4. **Special case for $\phi$ (Phi) functions:** 
+   - Uses in a $\phi$ function correspond to the respective predecessor blocks.
+   - When processing a predecessor, update the corresponding $\phi$ operand.
+
+## Example Flowchart (Renaming in Action)
+- **Block 1 (ENTRY):**
+  - `I_0 = 0`
+- **Block 2 (Loop Header/Body):**
+  - `I_1 = phi(I_0, I_2)`  # Operands are from Block 1 and Block 2 back-edge
+  - `I_2 = I_1 + 1`
+  - `IF I_2 < 10` $\to$ loop back to Block 2 or exit to Block 3.
+- **Block 3 (Exit):**
+  - `RET I_2`

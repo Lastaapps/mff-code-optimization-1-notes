@@ -1,0 +1,25 @@
+# Blackboard Transcription: 20260311_130048.heic
+
+## Constant Propagation Trace in a Loop
+The diagram illustrates how the data-flow state (lattice values) changes during iterative analysis of a loop.
+
+### Control Flow Graph (CFG)
+1. **Entry Block**: `a = 0`
+2. **Loop Header / Body**: `a = 1`
+    - There is a back-edge from this block to its own entry.
+3. **Exit Block**: (Empty/Successor)
+
+### Meet Operation Examples (Bottom of board)
+- `0 ∧ T = 0` (where `T` is Top/Undefined $\top$)
+- `0 ∧ 1 = VAR` (where `VAR` is Bottom/Non-constant $\perp$)
+
+### Trace / State evolution (Top left table)
+The table seems to track the value of `a` at different points:
+- **At Entry**: `VAR` (or possibly `T` initially)
+- **After block 1 (`a = 0`)**: Value is `0`.
+- **At Loop Header (first pass)**: `0 ∧ T = 0`.
+- **After block 2 (`a = 1`)**: Value becomes `1`.
+- **At Loop Header (second pass)**: `0 ∧ 1 = VAR`.
+- **Final stabilized state at exit**: `VAR`.
+
+*Note: The image is rotated 90 degrees counter-clockwise.*

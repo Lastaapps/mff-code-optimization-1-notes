@@ -1,0 +1,25 @@
+# SSA Construction: Lemma @2
+
+**Statement (@2):**
+If $X \neq Y$ are basic blocks and there are paths $p: X \to^+ Z$ and $q: Y \to^+ Z$ converging in $Z$, then $Z \in DF^+(X) \cup DF^+(Y)$.
+
+### Proof Sketch
+
+1. Assume $Z \neq X, Y$.
+2. We want to show that $X'$ or $Y'$ (from Lemma @1) is $Z$.
+3. By Lemma @1, there exists $X' \in \{X\} \cup DF^+(X)$ on path $p$ that dominates $Z$.
+4. Similarly, there exists $Y' \in \{Y\} \cup DF^+(Y)$ on path $q$ that dominates $Z$.
+5. Without loss of generality (WLOG), assume $X'$ dominates $Y'$.
+6. Diagram shows paths from $Entry$ to $Z$:
+   - Path $p$ through $X$ and $X'$.
+   - Path $q$ through $Y$ and $Y'$.
+   - If $X'$ dominates $Y'$, and $Y'$ is on path $q$ which does not pass through $X$ (as they are "converging" in $Z$ and we are looking at the paths from $X$ and $Y$), there is a contradiction unless $X' = Z$ or similar reasoning.
+
+### Diagram Description
+- [ENTRY]
+- Two branches to [X] and [Y].
+- Path $p$ from [X] to [Z] passing through [X'].
+- Path $q$ from [Y] to [Z] passing through [Y'].
+- Nodes [X'] and [Y'] are chosen according to Lemma @1.
+- Arrows indicate dominance relationships and path directions.
+- Yellow text: "$X'$ BY @1", "$Y'$ BY @1".

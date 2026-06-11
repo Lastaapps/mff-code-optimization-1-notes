@@ -1,0 +1,15 @@
+# SSA Construction: $\phi$-Placement
+
+Let $S$ be the set of all basic blocks containing definitions of some variable $a$.
+
+Put $a = \phi(\dots)$ at the beginning of every basic block $BB \in DF^+(S)$.
+
+### Iterated Dominator Frontier ($DF^+$)
+
+$DF(S) = \bigcup_{B \in S} DF(B)$
+
+$DF_1(S) = DF(S)$
+
+$DF_{i+1}(S) = DF(S \cup DF_i(S))$
+
+$DF^+(S) = \lim_{i \to \infty} DF_i(S)$

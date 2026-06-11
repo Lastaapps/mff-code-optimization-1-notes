@@ -1,0 +1,23 @@
+# Dominance Frontier (DF)
+
+**Definition:**
+$DF(B) = \{C \mid (\exists p \in PRED(C)) \text{ such that } B \text{ dom } p \text{ and } \neg(B \text{ sdom } C)\}$
+where **sdom** is strict dominance ($B \text{ sdom } C \iff B \text{ dom } C \text{ and } B \neq C$).
+
+## Bottom-Up Computation Algorithm
+This algorithm performs a traversal on the dominance tree.
+
+**Local DF:**
+$DF_{loc}(B) = \{C \mid C \in SUCC(B) \text{ and } \neg(B \text{ sdom } C)\}$
+
+**Upward DF:**
+$DF_{up}(B) = \{C \in DF(B) \mid \neg(idom(B) \text{ sdom } C)\}$
+
+**Recursive Formula:**
+$DF(B) = DF_{loc}(B) \cup \bigcup_{z \in children(B)} DF_{up}(z)$
+
+**Complexity:** $O(\text{size of answer})$
+
+## Visual Illustrations
+- Diagrams show the relationship between a node $B$, its predecessors, successors, and the conditions under which a node $C$ enters the dominance frontier of $B$.
+- Specifically, if $B$ dominates a predecessor $P$ of $C$, but does not strictly dominate $C$, then $C \in DF(B)$.

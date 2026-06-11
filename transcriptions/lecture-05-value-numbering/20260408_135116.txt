@@ -1,0 +1,61 @@
+# Sparse Conditional Constant Propagation (SCCP)
+**Reference:** Wegman, Zadeck. "Constant Propagation with Conditional Branches" ('91)
+
+## Sparse Dataflow
+$\equiv$ Dataflow on the SSA graph.
+
+* **SCP**: Sparse Constant Propagation
+* **SCCP**: Sparse Conditional Constant Propagation
+
+### Example CFG
+```
+      [ ENTRY ]
+          | exec
+      [ a1 = 0 ]
+      [ IF a1 > 0 ]
+       /       \
+      F / exec    \ T (not exec)
+    [ B1 = 0 ]  [ B2 = 1 ]
+       \       /
+      [ B3 = phi(B1, B2) ]
+      [ = B3 ]
+```
+Lattice values in this example:
+* $Lattice(a_1) = 0$
+* $Lattice(B_1) = 0$
+* $Lattice(B_3) = 0$ (since the branch to $B_2$ is never executed)
+
+### Lattice Definition
+* $\top$ (Top): Undefined / Not yet constant
+* $c$ (Constants): $0, 1, 2, \dots$
+* $\bot$ (Bottom): Not a constant
+
+---
+
+## SCCP Algorithm
+
+### 1) Initialization
+* $FlowWL \leftarrow \text{Succ}(Entry)$
+* $SSAWL \leftarrow \emptyset$
+* $\forall e \in E(CFG) : \text{exec}(e) = \text{False}$
+* $\forall \text{SSA Name } n : Lattice(n) = \top$
+
+### 2) Main Loop
+While ($FlowWL \neq \emptyset$ or $SSAWL \neq \emptyset$):
+
+#### If $FlowWL \neq \emptyset$:
+1. $e \leftarrow \text{Pop } FlowWL$
+2. If $\text{exec}(e) = \text{False}$:
+   * $\text{exec}(e) = \text{True}$
+   * $\forall \phi \in e \to Dest : \text{Visit}\phi(\phi)$
+   * If $e \to Dest$ is visited for the first time:
+     * $\forall \text{Stmt } s \in e \to Dest : \text{VisitStmt}(s)$
+
+#### If $SSAWL \neq \emptyset$:
+1. $stmt \leftarrow \text{Pop } SSAWL$
+2. If $stmt$ is $\phi$: $\text{Visit}\phi(stmt)$
+3. Else: $\text{VisitStmt}(stmt)$
+
+### Helper Diagrams
+* A diagram shows the lattice structure ($\top \to \text{constants} \to \bot$).
+* A diagram shows a basic block with a $\phi$ function and an incoming edge $e \to Dest$.

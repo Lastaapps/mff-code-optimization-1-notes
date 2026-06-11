@@ -1,0 +1,30 @@
+# Blackboard Transcription: 20260318_125147.heic
+
+## Irreducible Control Flow Example: Duff's Device
+
+The blackboard shows a classic C idiom that creates irreducible control flow.
+
+### Code Sketch
+```c
+switch (n % 8) {
+    for (...) {
+        case 0: *to = *from++;
+        case 7: *to = *from++;
+        case 6: *to = *from++;
+        ...
+        case 1: *to = *from++;
+    }
+}
+```
+*(Note: The board shows `n % 2` or `n % 8` and a `switch` inside a `for` loop, or rather a `for` loop wrapped around the `case` labels, which is the essence of Duff's Device.)*
+
+---
+
+## CFG Representation
+- A diagram below the code illustrates the CFG of Duff's Device.
+- It shows multiple entries into the body of the loop (the `case` labels).
+- This structure is **irreducible** because the loop has multiple entry points.
+
+### Lattice / Height
+- Mention of $d(CFG)$ and iterations needed for convergence.
+- The diagram shows nodes with labels like `R1` (possibly identifying regions or blocks).

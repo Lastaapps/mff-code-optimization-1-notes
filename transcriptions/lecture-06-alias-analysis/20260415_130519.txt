@@ -1,0 +1,23 @@
+# ASSERT_EXPR in the CFG
+
+The diagram illustrates how `ASSERT_EXPR` acts as a filter on the `TRUE` branch of a conditional.
+
+### Diagram:
+```
+       [ a = ... ]
+       [ IF a == 1 ]
+          /     \
+         /       \
+     (T) /       \ (F)
+        /         \
+ [ a2 = ASSERT(a, 1) ]  [ use(a) ]
+ [ use(a2) ]
+```
+
+### Explanation:
+- On the **TRUE (T)** path, the condition `a == 1` is known to hold.
+- The statement `a2 = ASSERT_EXPR(a, 1)` is inserted at the beginning of the `T` branch.
+- This creates a new SSA name `a2`. The compiler can now associate the range `[1, 1]` with `a2`.
+- Any code in the `T` branch that originally used `a` is rewritten to use `a2`.
+- On the **FALSE (F)** path, the condition does not hold (or the compiler doesn't insert an assertion if the range is too complex), so the original `a` is used.
+- This is a form of **Range Materialization**.

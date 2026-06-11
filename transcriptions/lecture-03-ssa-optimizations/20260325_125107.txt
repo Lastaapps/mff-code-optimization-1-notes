@@ -1,0 +1,10 @@
+# Blackboard Transcription: 20260325_125107.jpg
+
+## Anticipancy (Backward Analysis)
+$$ANT IN(B) = EUSE(B) \cup (ANT OUT(B) \setminus KILL(B))$$
+$$ANT OUT(B) = \bigcap_{S \in SUCC(B)} ANT IN(S)$$
+
+## Busy Code Motion
+The goal is to move expressions as far "up" (towards entry) as possible while maintaining safety.
+1. **Critical Edge Splitting**: Ensure every edge from a block with multiple successors to a block with multiple predecessors is split.
+2. **Moving Expressions to Anticipancy Boundary**: Place the computation at the earliest point where it is anticipated.

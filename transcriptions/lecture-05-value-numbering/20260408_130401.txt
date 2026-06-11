@@ -1,0 +1,40 @@
+# SSA Construction: Theorems and Lemmas
+
+## Join Set and Dominator Frontier
+
+**Theorem:** If $Entry \in S$, then $DF^+(S) = J^+(S)$.
+
+**Lemma:** $DF^+(S) \supseteq J^+(S)$.
+
+---
+
+## Path Lemma (@1)
+
+**Statement:**
+If $X \neq Z$ are basic blocks and there is a path $P: X \to^+ Z$, then there exists $X' \in \{X\} \cup DF^+(X)$ on $P$ that dominates $Z$.
+
+### Proof / Case Analysis
+
+1. **If $X$ dominates $Z$:**
+   Then $X' = X$ satisfies the condition.
+
+2. **If $X$ does not dominate $Z$:**
+   Consider the path $P$ from $X$ to $Z$. There must be a node $X_1$ on $P$ which is the last node such that $X$ dominates $X_1$ but $X$ does not strictly dominate some successor of $X_1$ on the path.
+   The successor $X'$ on the path $P$ will be in $DF(X)$.
+   In the diagram:
+   - $X_1$ is the last node on $P \cap \text{Dom}(X)$.
+   - The successor of $X_1$ on $P$ is $X'$.
+   - $X' \in DF(X)$.
+   - Then recursively apply the logic or conclude $X' = Z$ if $X'$ is $Z$.
+
+### Diagram Description
+The diagram shows:
+- $Entry$ node.
+- Node $X$ and its dominated region (orange path).
+- Path $P$ leaving the dominated region of $X$ at some point.
+- $X_1$ is the last node in $Dom(X)$ on path $P$.
+- $X'$ is the successor of $X_1$ on $P$.
+- $X' \in DF(X)$.
+- Path continues to $Z$.
+
+$DF^+(x) \supseteq DF(x)$

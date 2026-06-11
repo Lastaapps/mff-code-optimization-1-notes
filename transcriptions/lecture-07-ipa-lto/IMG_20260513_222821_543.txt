@@ -1,0 +1,22 @@
+# Interprocedural Alias Analysis: IPA-PTA, TBAA, and MODREF
+
+## Function Attributes for Alias Analysis
+- **NO CAPTURE**: The pointer argument does not escape the function.
+- **NO INDIRECT CAPTURE**: Pointers stored in the memory pointed to by the argument do not escape.
+- **NO CLOBBER**: The function does not modify memory pointed to by the argument.
+- **NO READ**: The function does not read memory pointed to by the argument.
+- **NO RETURN**: The function does not return the pointer argument.
+
+## Key Techniques and History
+- **IPA-PTA** (Interprocedural Points-To Analysis): 1987 (Steensgaard/Andersen roots), 2003.
+- **TBAA** (Type-Based Alias Analysis): 1997.
+- **MODREF** (Modified and Referenced Analysis): 2023 (Recent GCC improvements).
+
+## MODREF (Modified & Referenced)
+- Analyzes which memory locations are modified or referenced by a function call.
+- Components:
+  1. **TBAA Access Tree**: Uses type information to narrow down potential aliases.
+  2. **Loads/Stores relative to parameters**: Tracks if a function accesses memory through its arguments (including the `this` pointer in C++).
+  3. **PTA Flags**: Points-to analysis flags (e.g., `ESCAPE`, `DIRECT_ESCAPE`).
+- Example: `this -> field` vs `parameter -> field`.
+- Helps in determining if a call clobbers a specific local variable or memory location.

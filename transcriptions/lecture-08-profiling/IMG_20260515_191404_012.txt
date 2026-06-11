@@ -1,0 +1,24 @@
+# IPA Pipeline and Early Optimizations
+
+## Compilation Pipeline with IPA
+- **Parser -> AST -> CGRAPH**
+- **Early Opts**:
+  - Analysis of function properties: `PURE`, `CONST`, `NOTHROW`.
+  - Local optimizations: CCP (Conditional Constant Propagation), PRE (Partial Redundancy Elimination), DCE (Dead Code Elimination).
+- **Callgraph Construction**: Mapping all function calls (direct and indirect).
+
+## Profile-Guided Optimization (PGO)
+- `-fprofile-generate`: Instrumenting the code to collect edge and value profiles.
+- **Profiling pass**:
+  - Collects counts for branches (edge profiling).
+  - Collects values for indirect calls (value profiling).
+- **Feedback**: Profile data is fed back into the compiler for better inlining and layout decisions.
+
+## Early Inlining (since 2005)
+- Small IPA passes that run before the main IPA loop.
+- Thresholds: 70, 7 (Conservative to avoid excessive code growth early on).
+
+## IPA Structure
+- **Small IPA**: Runs on a subset of the callgraph.
+- **Full IPA**: Runs on the whole program callgraph.
+- **Late GPT**: Late optimizations like loop transformations, CCP, PRE.

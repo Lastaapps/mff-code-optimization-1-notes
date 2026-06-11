@@ -1,0 +1,34 @@
+# Cooper's Dominance Algorithm Pseudocode
+
+**Complexity:** $O((n+m) \cdot D(CFG))$ where $D$ is the loop nesting depth or back-edge depth.
+
+## Algorithm
+```python
+# Initialization
+for all B:
+    DOM(B) = UNDEF
+
+changed = True
+DOM(ENTRY) = {ENTRY}
+
+while changed:
+    changed = False
+    for each B in RPO (except ENTRY):
+        # Pick some predecessor 'p' that has already been processed (DOM(p) != UNDEF)
+        N = DOM(p) 
+        
+        for each p in PRED(B):
+            if DOM(p) != UNDEF:
+                N = INTERSECT(DOM(p), N)
+        
+        # Note: N should also include B itself in standard formulations
+        if N != DOM(B):
+            DOM(B) = N
+            changed = True
+```
+
+## Intersection Details
+- **INTERSECT** is implemented using a **2-finger algorithm** because the dominator sets are represented as linked lists ordered by descending RPO.
+- **RPO Example Chains:**
+  - $10 \to 7 \to 6 \to 3 \to 1$
+  - $20 \to 8 \to 5$

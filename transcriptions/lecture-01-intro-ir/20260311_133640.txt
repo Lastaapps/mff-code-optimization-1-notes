@@ -1,0 +1,29 @@
+# Blackboard Transcription: 20260311_133640.heic
+
+## Unreachable Code Elimination Example
+The diagram shows how constant propagation can identify and eliminate unreachable basic blocks.
+
+### Variables under tracking:
+- `x`, `c`, `a`, `b`
+
+### Control Flow Graph (CFG)
+1. **ENTRY Block**:
+    - Instruction: `a = 2`
+    - Condition: `IF a > 2`
+2. **True Branch**:
+    - This path is marked with a **Large Yellow X**, indicating it is **Unreachable**.
+    - Since `a = 2`, the condition `a > 2` is always `False`.
+    - Lattice state on this edge: `a = T` (Top/Impossible).
+3. **False Branch**:
+    - Path taken.
+    - Lattice state on this edge: `a = 2`.
+    - Instruction in successor block: `b = 1`.
+4. **Merge/Exit**:
+    - The value of `b` is determined to be `1` because the other path (which might have set `b` to something else) is unreachable.
+
+### State Table / Trace (Left side)
+Shows the state of variables across different points (possibly labeled `BB4`):
+- `a` is `2`.
+- `b` is `1` after the execution of the reachable path.
+
+*Note: The image is rotated 90 degrees counter-clockwise.*

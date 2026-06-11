@@ -1,0 +1,23 @@
+# Post-Dominance and Control Dependence (CD)
+
+### Definition: Post-Dominance (PDOM)
+- **Definition:** A node `B` post-dominates a node `C` (`B PDOM C`) if every path from `C` to the `EXIT` node of the CFG must pass through `B`.
+- This is the dual of dominance (DOM) on the reversed Control Flow Graph.
+
+### Definition: Control Dependence (CD)
+- **Concept:** Node `C` is control dependent on node `B` if `B` is a decision point (e.g., an `IF` statement) that determines whether `C` will be executed.
+- **Formal Definition:** `C` is control dependent on `B` if:
+  1. There exists a path from `B` to `C` such that every node `X` on the path (excluding `B` and `C`) is post-dominated by `C`.
+  2. `B` is **not** post-dominated by `C`.
+
+### Computing Control Dependence:
+- Control Dependence (CD) can be computed using the **Dominance Frontier (DF)** algorithm applied to the **reversed** CFG.
+- "CD are DF reversed" (`CD = DF_reversed`).
+- `CD+` (transitive closure) corresponds to `DF+` on the reversed graph.
+
+---
+
+### Special Case: Infinite Loops
+- `WHILE(TRUE) { ASM VOLATILE ("..."); }`
+- Infinite loops can complicate control dependence and post-dominance calculations because some paths might never reach `EXIT`.
+- Compilers often add a virtual edge from infinite loops to `EXIT` to keep the analysis consistent.

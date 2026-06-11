@@ -1,0 +1,40 @@
+# Blackboard Transcription: 20260318_132349.jpg
+
+## Global Common Subexpression Elimination (CSE)
+
+### Availability Analysis (Forward Data-Flow)
+CSE relies on determining if an expression is "available" at a given point.
+
+#### Equations
+- **AV IN(b)**:
+  $$AV IN(b) = \bigcap_{p \in \text{Pred}(b)} AV OUT(p)$$
+  *(Note: Intersection is used because an expression must be available on ALL paths.)*
+- **AV OUT(b)**:
+  $$AV OUT(b) = AV_{local}(b) \cup (AV IN(b) \setminus \text{kill}(b))$$
+
+---
+
+## Examples
+- **Block 1**: `A + B` is computed.
+- **Block 2**: `B + C` is computed, and `A` is redefined (`A = ...`), which **kills** the expression `A + B`.
+- **Merging**: If `A + B` is available on all incoming edges to a block, it is available `AV IN`.
+
+### Diagram of CSE Transformation
+1. Original code:
+   ```c
+   C = A + B;
+   D = C + 1;
+   ...
+   E = A + B; // Redundant
+   F = E + 1;
+   ```
+2. After CSE:
+   ```c
+   T0 = A + B;
+   C = T0;
+   D = C + 1;
+   ...
+   E = T0; // Replaced by temporary
+   F = E + 1;
+   ```
+- The blackboard shows `A+B` being crossed out in the second block and replaced by `T0`.

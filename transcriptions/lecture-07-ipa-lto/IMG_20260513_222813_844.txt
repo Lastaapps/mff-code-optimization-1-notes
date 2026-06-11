@@ -1,0 +1,26 @@
+# Local Value Numbering
+
+## RHS Expression Hashing
+- `t = a + b` (RHS: `a + b`)
+- `D = b + c`
+- `t1 = b + c`
+- `E = t1 + a`
+
+## Expression Hash Diagram
+- Partitioning of values: `a`, `b`, `c`, `a+b`, `b+c`, etc.
+- Value numbers assigned to expressions.
+- `a + b` assigned to VN 3.
+- `b + c` assigned to VN 5.
+- `(a + b) + c` and `a + (b + c)` should ideally map to the same value (associativity).
+
+## Algorithm for BB
+```
+FOR EACH DEF x IN BB:
+    n = LOOKUP(x.op, x[0], x[1])
+    IF n IS NOT NULL:
+        REPLACE x WITH n
+    VN[x.dest] = n
+```
+- The `LOOKUP` function checks if the expression `(op, op1, op2)` is already in the hash table.
+- If found, it returns the existing value number `n`.
+- If not, it creates a new value number and stores it.

@@ -1,0 +1,31 @@
+# Alias Analysis and Global Value Numbering
+
+## Alias Analysis Categories
+- **NO ALIAS**: Two pointers definitely point to different memory locations.
+- **MAYBE ALIAS**: Two pointers might point to the same memory location.
+- **MUST ALIAS**: Two pointers definitely point to the same memory location.
+
+## C++ specific optimizations
+- `-fsane-operator-new`: Assumption that `operator new` returns a pointer that does not alias any other pointer.
+- Example:
+  ```cpp
+  a = OPERATOR::NEW(SIZE, ALIAS);
+  // MEMSET(a, ...);
+  P = a -> array;
+  *p = 0; // CLOBBER(a)
+  OPERATOR::DELETE(a);
+  ```
+
+## Global Value Numbering (GVN)
+- Goal: Common Subexpression Elimination (CSE).
+- For every SSA name `n`, `VN(n)` is its value number.
+- `VN(n) = VN(n')` implies that `n` and `n'` will always have the same value at runtime (if computed).
+- Complexity: $O(n \log n)$.
+
+## Congruence Based VN on SSA Names
+1. Subdivide by types, operators, and constants.
+2. For each equivalence class:
+   - Check if operands are also equivalent.
+   - If not, subdivide the class further.
+   - Repeat until a fixed point is reached.
+- Diagram showing sets of SSA names being partitioned (DIV, VN + VN, etc.).
