@@ -25,6 +25,7 @@ This directory contains detailed notes and study materials for the course **Code
 
 - **notes/**: The primary directory where new, comprehensive lecture notes are generated.
 - **notes-src/**: Contains old/original notes and materials used as reference.
+- **slides/**: Contains lecture slides (PDF format) used as a supplemental source for note generation.
 - **blackboards/**: Contains lecture blackboard images. **DEPRECATED**: Use `transcriptions/` instead.
 - **transcriptions/**: Directory for OCR-transcribed text from blackboard images, organized by lecture. This is the primary source for generating notes.
 
@@ -35,5 +36,6 @@ This directory contains detailed notes and study materials for the course **Code
     *   **Rule**: Never use original images from `blackboards/`. Always use the transcriptions in `transcriptions/`.
 2.  **Note Generation**: (In Progress)
     *   Generate one markdown note per lecture topic into the `notes/` directory.
-    *   Synthesize information from `transcriptions/`, existing notes in `notes-src/`, and GCC documentation.
+    *   Synthesize information from `transcriptions/`, existing notes in `notes-src/`, GCC documentation, and `slides/`.
+    *   **Note**: Existing notes in `notes/` were generated without the use of `slides/`. Future updates should incorporate information from these slides.
     *   Prioritize technical precision, illustrative examples, and mathematical notation.
