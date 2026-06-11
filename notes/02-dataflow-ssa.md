@@ -11,9 +11,9 @@ Liveness is a backward data-flow analysis used to determine which variables are 
 - **Local Live ($LocalLive_b$)**: The set of variables used in block $b$ before any definition of that same variable in $b$.
 - **Kill ($Kill_b$)**: The set of variables defined in block $b$ before any use.
 
-The liveness sets at the entry ($IN$) and exit ($OUT$) of a block $b$ are defined as:
-$$LIVE\_IN(b) = LocalLive_b \cup (LIVE\_OUT(b) \setminus Kill_b)$$
-$$LIVE\_OUT(b) = \bigcup_{s \in Succ(b)} LIVE\_IN(s)$$
+The liveness sets at the entry ($\text{IN}$) and exit ($\text{OUT}$) of a block $b$ are defined as:
+$$\text{LIVE\_IN}(b) = LocalLive_b \cup (\text{LIVE\_OUT}(b) \setminus Kill_b)$$
+$$\text{LIVE\_OUT}(b) = \bigcup_{s \in Succ(b)} \text{LIVE\_IN}(s)$$
 
 ### Implementation
 
@@ -33,16 +33,29 @@ The efficiency of iterative data-flow analysis depends on the order in which bas
 - **Reverse Postorder (RPO)**: Parents are visited before children (topological order for DAGs).
   - For a **DAG**, RPO ensures convergence in just **one pass** (plus one to confirm the fixed point).
 
-### Convergence Complexity (Kam & Ullman, 1972)
+## Convergence Complexity and Reducibility
 
-For most bit-vector problems on a **reducible CFG**, the iterative algorithm terminates in:
-$$\text{Iterations} \leq d(CFG) + 3$$
-- **$d(CFG)$ (Loop Connectivity)**: The maximum number of back-edges on any cycle-free path in the CFG. Intuitively, this relates to the "nesting depth" of loops.
+### Proof Sketch: Iterative Data-Flow Convergence
+
+The convergence is guaranteed by the **Monotonicity** of the transfer functions and the **finite height** of the semi-lattice. 
+
+1. Let $L$ be a semi-lattice with height $h$.
+2. In each iteration of the data-flow algorithm, at least one value in the semi-lattice must change (by moving down).
+3. If an iteration does not produce a change, the fixed point is reached.
+4. For bit-vector problems on a reducible graph, the information flow only needs to traverse loop back-edges $d(CFG)$ times, hence $d(CFG) + 3$ iterations.
 
 ### Reducible vs. Irreducible CFG
 
-- **Reducible CFG**: A CFG where every cycle has a single entry point (the header). Such graphs can be collapsed to a single node using $T_1$ and $T_2$ transformations.
-- **Irreducible CFG**: Contains cycles with multiple entry points. This usually happens when using `goto` or specialized idioms like **Duff's Device** (a `switch` interleaved with a `for` loop).
+A CFG is **reducible** if it can be reduced to a single node by repeatedly applying these two transformations:
+- **T1**: Remove a self-looping edge.
+- **T2**: If node $n$ has only one predecessor $m$, merge $n$ into $m$.
+
+### Reaching Definitions (RD) - Bitvector
+
+For a function with $N$ definitions, the bitvector $V$ has $N$ bits.
+- $V[i] = 1$ if definition $i$ reaches this point.
+- Example: $V = 10010_2$ means definitions 1 and 4 reach this point.
+- $RD_{\text{IN}}(b) = \bigvee RD_{\text{OUT}}(p)$ (bit-wise OR of predecessor vectors).
 
 ---
 
@@ -54,8 +67,8 @@ Determines which definitions of a variable (at a specific instruction) might rea
 - **Direction**: Forward.
 - **Meet**: Union ($\cup$).
 - **Equations**:
-    $$RD\_IN(b) = \bigcup_{p \in Pred(b)} RD\_OUT(p)$$
-    $$RD\_OUT(b) = RD_{local}(b) \cup (RD\_IN(b) \setminus Kill_b)$$
+    $$\text{RD\_IN}(b) = \bigcup_{p \in Pred(b)} \text{RD\_OUT}(p)$$
+    $$\text{RD\_OUT}(b) = \text{RD}_{\text{local}}(b) \cup (\text{RD\_IN}(b) \setminus Kill_b)$$
 
 ### Availability Analysis (AV)
 
@@ -63,8 +76,8 @@ Used for Common Subexpression Elimination (CSE). An expression $A + B$ is availa
 - **Direction**: Forward.
 - **Meet**: Intersection ($\bigcap$).
 - **Equations**:
-    $$AV\_IN(b) = \bigcap_{p \in Pred(b)} AV\_OUT(p)$$
-    $$AV\_OUT(b) = AV_{local}(b) \cup (AV\_IN(b) \setminus Kill_b)$$
+    $$\text{AV\_IN}(b) = \bigcap_{p \in Pred(b)} \text{AV\_OUT}(p)$$
+    $$\text{AV\_OUT}(b) = \text{AV}_{\text{local}}(b) \cup (\text{AV\_IN}(b) \setminus Kill_b)$$
 
 ---
 
@@ -74,7 +87,7 @@ Dominance is a critical concept for SSA construction and loop optimizations.
 
 ### Definition
 
-A basic block $A$ **dominates** block $B$ ($A \text{ dom } B$) if every path from the `ENTRY` node to $B$ must go through $A$.
+A basic block $A$ **dominates** block $B$ ($A \text{ dom } B$) if every path from the $\text{ENTRY}$ node to $B$ must go through $A$.
 
 - **Reflexivity**: $A \text{ dom } A$.
 - **Transitivity**: $(A \text{ dom } B \wedge B \text{ dom } C) \implies A \text{ dom } C$.
@@ -95,3 +108,7 @@ The set of immediate dominance relationships forms a **Dominator Tree**.
 
 - Simple iterative solver: $O(N^2)$.
 - **Lengauer-Tarjan (1979)**: $O(E \cdot \alpha(V))$ using the inverse Ackermann function. In practice, compilers use more modern fast dominance algorithms (like Cooper et al., 2004) which are easier to implement and highly efficient.
+
+### Strict Dominance
+
+Node $A$ **strictly dominates** node $B$ ($A \text{ sdom } B$) if $A$ dominates $B$ and $A \neq B$.

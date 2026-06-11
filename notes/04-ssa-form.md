@@ -26,17 +26,24 @@ To handle points where different control flow paths merge, SSA introduces $\phi$
 
 ## 2. SSA Construction Algorithm (Cytron et al., 1989)
 
-The standard construction algorithm consists of four main steps:
+The standard construction algorithm consists of four main steps. **See slides for more complete explanation**.
 
-### Step 1: Computing Dominators
-Compilers typically use the **Cooper, Harvey, and Kennedy (2004)** algorithm or **Lengauer-Tarjan** for this.
+## 2. SSA Construction Algorithm (Cytron et al., 1989)
 
-- **Cooper's Algorithm**: An iterative solver using a "2-finger" intersection algorithm on dominator sets represented as RPO-ordered lists.
-  - Complexity: $O(N \cdot D)$, where $D$ is the loop nesting depth.
+### Step 1: Computing Dominators (The "2-Finger" Intersection)
+
+When computing dominators iteratively, the dominator sets are represented as ordered linked lists (based on RPO).
+
+- **The Intersection Algorithm**:
+  Two pointers ("fingers") traverse two dominator lists $D(p_1)$ and $D(p_2)$ backwards (from exit to entry).
+  - If the pointers refer to the same node $n$, then $n$ is in the intersection.
+  - If one pointer refers to a node $n$ and the other to $m$, increment the pointer pointing to the node with the smaller DFS number (the one "higher" in the dominator tree).
+  - Repeat until the pointers meet.
 
 ### Step 2: Computing Dominance Frontiers (DF)
 
 The **Dominance Frontier** of a block $B$ is the set of all nodes $C$ such that $B$ dominates a predecessor of $C$, but $B$ does not strictly dominate $C$.
+
 $$DF(B) = \{C \mid (\exists p \in Pred(C)) [B \text{ dom } p \wedge \neg(B \text{ sdom } C)]\}$$
 
 ### Step 3: $\phi$ Placement
@@ -45,6 +52,23 @@ For a variable $V$ defined in a set of blocks $X$:
 1. Identify the **Iterated Dominance Frontier** $DF^+(X)$.
 2. Place a $\phi$ function for $V$ in every block belonging to $DF^+(X)$.
 3. This ensures that a $\phi$ node exists at every "join point" where multiple definitions of $V$ could reach.
+
+#### Step 2 & 3: Dominance Frontiers and $\phi$ Placement Example
+CFG:
+```
+      [Entry]
+         |
+        [1] <----+
+       /   \     |
+     [2]   [3] --+
+       \   /
+        [4]
+```
+1. **Dominators**: $IDom(1)=Entry, IDom(2)=1, IDom(3)=1, IDom(4)=1$.
+2. **DF(1)**: Successors are {2, 3}. 1 dominates {2, 3}, so $DF(1) = \emptyset$.
+3. **DF(2)**: Successor is {4}. 2 does not dominate 4 (path via 3 does not contain 2), so $DF(2)=\{4\}$.
+4. **DF(3)**: Successor is {4}. 3 does not dominate 4, so $DF(3)=\{4\}$.
+5. **$\phi$ placement for $X$**: If $X$ is defined in blocks {2, 3}, then $DF^+(X) = \{4\}$. We place $\phi$ at the entry of block 4: `X = phi(X2, X3)`.
 
 ### Step 4: Renaming
 

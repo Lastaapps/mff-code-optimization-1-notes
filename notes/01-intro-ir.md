@@ -1,6 +1,6 @@
 # Lecture 1: Introduction to Intermediate Representations and Data-Flow Analysis
 
-This lecture covers the transition from the frontend to the middle-end of a compiler, focusing on intermediate representations (IR) and the foundational framework for data-flow analysis.
+This lecture covers the transition from the frontend to the middle-end of a compiler. The **middle-end** is the architectural phase that performs language-independent optimizations on the intermediate representation (IR), bridging the gap between the source-language-specific frontend (which lowers source code to IR) and the machine-specific backend (which lowers IR to target machine code).
 
 ## 1. Compiler Frontend and IR Generation
 
@@ -13,7 +13,9 @@ The frontend is responsible for translating source code into a language-independ
 3. **IR Generation**: Lowering the AST into one or more Intermediate Languages (IL/IR).
 
 ### Intermediate Representation (IR) Types
+
 Compilers often use multiple levels of IR to perform different types of optimizations:
+
 - **High-Level IR**: Often tree-based (e.g., GCC's **GENERIC**, **GIMPLE**, or LLVM IR). It preserves high-level constructs like loops and array access.
 - **Mid-Level IR**: More atomic types, simplified aggregates.
 - **Low-Level IR**: Closer to the target architecture. GCC uses **RTL** (Register Transfer Language), which uses Lisp-like syntax and describes operations on registers and memory.
@@ -44,14 +46,6 @@ The **Symbol Table** tracks all global and local entities.
   - `external`: Defined elsewhere.
   - `comdat`: Used for merging identical symbols (e.g., inline functions, template instantiations).
   - `weak`: Optional symbols that can be overridden.
-
-### Memory Sections
-
-Compiled symbols are placed into specific binary sections:
-- `.text`: Executable code.
-- `.data`: Initialized global/static variables.
-- `.rodata`: Read-only data (constants).
-- `.bss`: Uninitialized data (zero-filled at runtime).
 
 ---
 
@@ -85,11 +79,6 @@ We model the information being propagated using a **semi-lattice** $(L, \wedge)$
 - **Top ($\top$)**: Undefined or "no information yet".
 - **Bottom ($\perp$) or VAR**: Non-constant or "multiple conflicting values".
 - **Constants**: Intermediate values (0, 1, 2, ...).
-
-**Meet examples for Constant Propagation**:
-- $c \wedge \top = c$
-- $c_1 \wedge c_2 = \perp$ (if $c_1 \neq c_2$)
-- $c \wedge \perp = \perp$
 
 ### Monotonicity
 
